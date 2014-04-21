@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Trilean: Example 1</title>
+
+
+</head>
+
+<body>
+
+
+<script src="../source/trilean.js"></script>
+
+<script>
+
+    //noinspection ThisExpressionReferencesGlobalObjectJS
+    (function (window, console, Trilean) {
+
+        'use strict';
+
+        var log = console.log.bind(console);
+
+        //noinspection JSPotentiallyInvalidConstructorUsage
+        var t = new trilean(true), f = new trilean(false), n = new trilean();
+
+        var trileans = [f, n, t];
+
+        var numbers = [-1, 0, 1];
+
+        numbers.forEach(function (i) {
+            log(i, '' + Trilean(i), Trilean(i));
+        });
+
+        trileans.forEach(function (i) {
+            trileans.forEach(function (j) {
+                log('' + i, 'and', '' + j, '->', '' + (i.and(j)));
+            });
+        });
+
+
+    }(this, console, Trilean))
+
+
+</script>
+
+</body>
+</html>
