@@ -2,32 +2,38 @@
  * Created by azder on 2014-04-20.
  */
 
+
 /*global define:false, module:false */
 
-(function (G, factory) {
+(function (G) {
+
+    return function (name, factory) {
+
+        // ALWAYS
+        'use strict';
+
+        if (module && module.exports) {
+            module.exports = factory();
+            return;
+        }
+
+        if ('function' === typeof define && define.amd) {
+            define(factory);
+            return;
+        }
+
+        G[name] = factory(G);
+
+    };
+
+}(this))
+
+('trilean', function () {
 
     // ALWAYS
     'use strict';
 
-    if ('object' === typeof module && 'object' === typeof module.exports) {
-        module.exports = factory();
-        return;
-    }
-
-    if ('function' === typeof define && define.amd) {
-        define(factory);
-        return;
-    }
-
-    G['trilean'] = factory(G);
-
-
-}(this, function () {
-
-    // ALWAYS
-    'use strict';
-
-    var F, N, T, primitive, trilean, proto;
+    var FALSE, NIL, TRUE, primitive, trilean, proto;
 
     function Trilean(value) {
 
@@ -85,7 +91,7 @@
     trilean = function (value) {
 
         value = primitive(value);
-        return true === value ? T : ( false === value ? F : N);
+        return true === value ? TRUE : ( false === value ? FALSE : NIL);
 
     };
 
@@ -98,14 +104,14 @@
             var b = primitive(value);
 
             if (false === a || false === b) {
-                return F;
+                return FALSE;
             }
 
             if (null === a || null === b) {
-                return N;
+                return NIL;
             }
 
-            return T;
+            return TRUE;
 
         },
 
@@ -115,14 +121,14 @@
             var b = primitive(value);
 
             if (true === a || true === b) {
-                return T;
+                return TRUE;
             }
 
             if (null === a || null === b) {
-                return N;
+                return NIL;
             }
 
-            return F;
+            return FALSE;
 
         },
 
@@ -143,7 +149,7 @@
             var p = primitive(this);
 
             if (false === p) {
-                return T;
+                return TRUE;
             }
 
             if (true === p) {
@@ -151,10 +157,10 @@
             }
 
             if (true === primitive(value)) {
-                return T;
+                return TRUE;
             }
 
-            return N;
+            return NIL;
 
         },
 
@@ -163,10 +169,10 @@
             var p = primitive(this), q = primitive(value);
 
             if (null === p || null === q) {
-                return N;
+                return NIL;
             }
 
-            return p === q ? T : F;
+            return p === q ? TRUE : FALSE;
 
         },
 
@@ -182,14 +188,14 @@
 
     Trilean.prototype = proto;
 
-    F = new Trilean(false);
-    N = new Trilean(null);
-    T = new Trilean(true);
+    FALSE = new Trilean(false);
+    NIL = new Trilean(null);
+    TRUE = new Trilean(true);
 
-    proto.F = F;
-    proto.N = N;
-    proto.T = T;
+    proto.FALSE = FALSE;
+    proto.NIL = NIL;
+    proto.TRUE = TRUE;
 
     return trilean;
 
-}));
+});
